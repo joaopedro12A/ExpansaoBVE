@@ -1,0 +1,61 @@
+/* ==========================================================
+   Hero (início) e título das páginas
+   ========================================================== */
+
+.hero,
+.pt {
+  position: relative;
+  overflow: hidden;
+  color: #fff;
+  background: var(--hd2);
+}
+.hero:before {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  width: 50%;
+  background: linear-gradient(160deg, #e01a22, #7d0a10);
+  clip-path: polygon(20% 0, 100% 0, 100% 100%, 0 100%);
+}
+.pt:before {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  width: 34%;
+  background: linear-gradient(160deg, #e01a22, #7d0a10);
+  clip-path: polygon(24% 0, 100% 0, 100% 100%, 0 100%);
+}
+.hero > .mq,
+.pt > .mq {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -34px;
+}
+.hero .in {
+  position: relative;
+  display: grid;
+  grid-template-columns: 1.1fr 0.9fr;
+  align-items: center;
+  gap: 32px;
+  padding: 72px 24px 150px;
+}
+h1 {
+  font-size: clamp(46px, 7.2vw, 98px);
+  line-height: 0.94;
+  margin: 0 0 20px;
+}
+.hero .lead {
+  color: rgba(255, 255, 255, 0.85);
+  font-size: 20px;
+  max-width: 500px;
+}
+.hero img.lg {
+  width: min(400px, 100%);
+  justify-self: center;
+  filter: drop-shadow(0 24px 36px rgba(0, 0, 0, 0.5));
+}

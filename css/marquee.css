@@ -1,0 +1,47 @@
+/* ==========================================================
+   Faixa de imagens que passa (marquee)
+   ========================================================== */
+
+.mq {
+  overflow: hidden;
+  pointer-events: none;
+}
+.mq-t {
+  display: flex;
+  width: max-content;
+  animation: mq var(--d, 60s) linear infinite;
+}
+.mq-g {
+  display: flex;
+}
+.mq img {
+  height: var(--h);
+  width: var(--h);
+  margin-right: var(--gap);
+  display: block;
+}
+@keyframes mq {
+  to {
+    transform: translateX(-50%);
+  }
+}
+.mq.big {
+  --h: 200px;
+  --gap: 90px;
+  opacity: 0.13;
+}
+.mq.sm {
+  --h: 52px;
+  --gap: 34px;
+}
+.mq.sm img {
+  border-radius: 10px;
+}
+.mq.wh {
+  --h: 56px;
+  --gap: 56px;
+}
+.mq.wh img {
+  width: auto;
+  max-width: none;
+}

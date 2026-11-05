@@ -1,0 +1,43 @@
+/* ==========================================================
+   Variáveis: cores e temas (claro, escuro)
+   ========================================================== */
+
+:root {
+  --p: #d0121b;
+  --hd: #2b2d31;
+  --hd2: #1a1b1e;
+  --bg: #eceeef;
+  --bg2: #fff;
+  --tx: #1c1d20;
+  --mu: #5d636b;
+  --bd: #d0d3d7;
+  --cut: polygon(12px 0, 100% 0, calc(100% - 12px) 100%, 0 100%);
+  color-scheme: light;
+  box-sizing: border-box;
+  padding-top: env(safe-area-inset-top, 0px);
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --p: #ff3b3b;
+    --hd: #202225;
+    --hd2: #101112;
+    --bg: #18191b;
+    --bg2: #222427;
+    --tx: #f1f2f3;
+    --mu: #9aa0a8;
+    --bd: #363a3e;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --p: #ff3b3b;
+  --hd: #202225;
+  --hd2: #101112;
+  --bg: #18191b;
+  --bg2: #222427;
+  --tx: #f1f2f3;
+  --mu: #9aa0a8;
+  --bd: #363a3e;
+  color-scheme: dark;
+}

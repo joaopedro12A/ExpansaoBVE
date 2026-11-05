@@ -1,0 +1,82 @@
+/* ==========================================================
+   Animação de entrada, mobile (até 820px) e movimento reduzido
+   ========================================================== */
+
+.pg {
+  animation: f 0.5s ease;
+}
+@keyframes f {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+@media (max-width: 820px) {
+  .hero .in,
+  .cols,
+  footer .g {
+    grid-template-columns: 1fr;
+  }
+  .hero:before {
+    width: 100%;
+    top: auto;
+    height: 38%;
+    clip-path: polygon(0 28%, 100% 0, 100% 100%, 0 100%);
+  }
+  .hero img.lg {
+    width: 190px;
+    order: -1;
+    justify-self: start;
+  }
+  .hero .in {
+    padding: 44px 24px 130px;
+  }
+  .mq.big {
+    --h: 140px;
+  }
+  .q {
+    margin-left: 0;
+    width: 100%;
+  }
+  .row {
+    grid-template-columns: 1fr auto;
+    gap: 4px 12px;
+  }
+  .row .ty,
+  .row .vs {
+    display: none;
+  }
+  .menu {
+    display: block;
+  }
+  nav {
+    position: absolute;
+    top: 68px;
+    left: -24px;
+    right: -24px;
+    background: var(--hd2);
+    flex-direction: column;
+    padding: 8px 24px 16px;
+    display: none;
+  }
+  nav.open {
+    display: flex;
+  }
+  .step {
+    grid-template-columns: 54px 1fr;
+  }
+  .step i {
+    font-size: 48px;
+  }
+  .pt:before {
+    width: 46%;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation: none !important;
+    transition: none !important;
+  }
+}

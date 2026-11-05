@@ -1,0 +1,45 @@
+/* ==========================================================
+   Rodapé
+   ========================================================== */
+
+footer {
+  background: var(--hd2);
+  color: #fff;
+  margin-top: 40px;
+  border-top: 4px solid var(--p);
+}
+footer .mq {
+  padding: 16px 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+}
+footer .g {
+  display: grid;
+  grid-template-columns: 1.4fr 1fr;
+  gap: 32px;
+  padding-top: 36px;
+  padding-bottom: 32px;
+}
+footer p {
+  margin: 6px 0 0;
+  opacity: 0.85;
+}
+footer small {
+  display: block;
+  opacity: 0.6;
+  margin-top: 16px;
+  font-size: 13px;
+  line-height: 1.55;
+}
+footer a {
+  display: block;
+  opacity: 0.8;
+  padding: 3px 0;
+}
+footer a:hover {
+  opacity: 1;
+}
+footer b {
+  font:
+    italic 800 26px "Barlow Condensed",
+    sans-serif;
+}

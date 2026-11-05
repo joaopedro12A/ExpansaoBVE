@@ -1,0 +1,81 @@
+/* ==========================================================
+   Página Equipe e aviso de direitos autorais
+   ========================================================== */
+
+.team {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
+  gap: 16px;
+}
+.cb {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  border: 1px solid var(--bd);
+  border-left: 6px solid var(--p);
+  padding: 16px 18px;
+  background: var(--bg2);
+}
+.av {
+  width: 60px;
+  height: 60px;
+  flex: none;
+  overflow: hidden;
+  background: var(--hd);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font:
+    italic 800 28px "Barlow Condensed",
+    sans-serif;
+  clip-path: var(--cut);
+}
+.av img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.cb .u {
+  flex: 1;
+  min-width: 0;
+  font-weight: 600;
+  font-size: 18px;
+  line-height: 1.25;
+}
+.cb small {
+  display: block;
+  font-weight: 400;
+  color: var(--mu);
+  font-size: 14px;
+}
+.lk {
+  width: 44px;
+  height: 44px;
+  flex: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--bd);
+  color: var(--mu);
+  transition: 0.2s;
+}
+a.lk:hover {
+  background: var(--p);
+  border-color: var(--p);
+  color: #fff;
+}
+.lk.off {
+  opacity: 0.35;
+}
+.notice {
+  border-left: 6px solid var(--p);
+  background: var(--bg2);
+  padding: 18px 22px;
+  margin-top: 40px;
+  color: var(--mu);
+  max-width: 780px;
+}
+.notice b {
+  color: var(--tx);
+}

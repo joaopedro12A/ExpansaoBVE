@@ -1,0 +1,43 @@
+/* ==========================================================
+   Botões
+   ========================================================== */
+
+.btns {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  margin-top: 30px;
+}
+.btn {
+  display: inline-block;
+  padding: 13px 34px;
+  font:
+    600 17px Barlow,
+    sans-serif;
+  background: var(--p);
+  color: #fff;
+  border: 0;
+  clip-path: var(--cut);
+  cursor: pointer;
+  transition: 0.2s;
+}
+.btn:hover {
+  filter: brightness(1.15);
+}
+.btn.o {
+  background: var(--hd);
+  color: #fff;
+}
+.hero .btn {
+  background: #fff;
+  color: #8c0b12;
+}
+.hero .btn.o {
+  background: rgba(255, 255, 255, 0.14);
+  color: #fff;
+}
+.btn[disabled] {
+  opacity: 0.55;
+  cursor: not-allowed;
+  filter: none;
+}

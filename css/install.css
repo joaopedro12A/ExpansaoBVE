@@ -1,0 +1,48 @@
+/* ==========================================================
+   Página Como instalar: passos e perguntas frequentes
+   ========================================================== */
+
+.steps {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  max-width: 780px;
+}
+.step {
+  display: grid;
+  grid-template-columns: 72px 1fr;
+  gap: 18px;
+  padding: 22px 0;
+  border-top: 2px solid var(--bd);
+}
+.step i {
+  font-size: 64px;
+  line-height: 0.9;
+  color: var(--p);
+}
+.step p {
+  margin: 0;
+  color: var(--mu);
+}
+.step a {
+  color: var(--p);
+  text-decoration: underline;
+}
+details {
+  border-bottom: 1px solid var(--bd);
+  padding: 14px 0;
+  max-width: 780px;
+}
+summary {
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 18px;
+}
+details p {
+  margin: 8px 0 0;
+  color: var(--mu);
+}
+
+.faq-title {
+  margin-top: 56px;
+}
