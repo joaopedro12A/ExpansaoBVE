@@ -11,7 +11,8 @@ const formatarData = data =>
 const valorOuReserva = (valor, reserva) =>
   valor ? valor : `<span class="dim">${reserva}</span>`;
 
-const ICONE_LINK = `<svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path fill="currentColor" d="M10.6 13.4a1 1 0 0 1 0-1.4l3.5-3.5a3 3 0 1 1 4.2 4.2l-2 2-1.4-1.4 2-2a1 1 0 0 0-1.4-1.4L12 13.4a1 1 0 0 1-1.4 0Zm2.8-2.8a1 1 0 0 1 0 1.4L9.9 15.5a3 3 0 1 1-4.2-4.2l2-2 1.4 1.4-2 2a1 1 0 0 0 1.4 1.4L12 10.6a1 1 0 0 1 1.4 0Z"/></svg>`;
+const ICONE_YOUTUBE = `<svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path fill="currentColor" d="M23.5 6.2a3 3 0 0 0-2.1-2.1C19.5 3.6 12 3.6 12 3.6s-7.5 0-9.4.5A3 3 0 0 0 .5 6.2C0 8.1 0 12 0 12s0 3.9.5 5.8a3 3 0 0 0 2.1 2.1c1.9.5 9.4.5 9.4.5s7.5 0 9.4-.5a3 3 0 0 0 2.1-2.1c.5-1.9.5-5.8.5-5.8s0-3.9-.5-5.8ZM9.6 15.6V8.4l6.2 3.6-6.2 3.6Z"/></svg>`;
+const ICONE_INSTAGRAM = `<svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path fill="currentColor" d="M12 7.3A4.7 4.7 0 1 0 12 16.7 4.7 4.7 0 0 0 12 7.3Zm0 7.7a3 3 0 1 1 0-6 3 3 0 0 1 0 6Z"/><circle cx="17" cy="7" r="1.1" fill="currentColor"/><path fill="currentColor" d="M16 2H8a6 6 0 0 0-6 6v8a6 6 0 0 0 6 6h8a6 6 0 0 0 6-6V8a6 6 0 0 0-6-6Zm4.2 14a4.2 4.2 0 0 1-4.2 4.2H8A4.2 4.2 0 0 1 3.8 16V8A4.2 4.2 0 0 1 8 3.8h8A4.2 4.2 0 0 1 20.2 8v8Z"/></svg>`;
 
 /* Faixa de imagens que passa.
    cls "big" = silhuetas brancas grandes e esmaecidas (w-*), "sm" = logos coloridas (c-*),
@@ -51,17 +52,23 @@ const cardDownload = d => `<article class="dc">
 // Linha do quadro "Últimos lançamentos" (página inicial)
 const linhaLancamento = d => `<div class="row"><span class="ty">${d.tipo}</span><div><b>${d.nome}</b><br><small>${d.data ? formatarData(d.data) : ""}</small></div><span class="vs">${d.versao || ""}</span><span class="pill ${d.url ? "" : "off"}">${d.url ? "Disponível" : "Em breve"}</span></div>`;
 
+// Botão de rede social: com url vira link; sem url fica desativado
+const botaoRede = (url, icone, rede, nome) => url
+  ? `<a class="lk" href="${url}" target="_blank" rel="noopener" aria-label="${rede} de ${nome}" title="${rede}">${icone}</a>`
+  : `<span class="lk off" role="img" aria-label="${rede} ainda não informado" title="${rede} em breve">${icone}</span>`;
+
 // Cartão de membro da equipe
+// Todo membro tem o botão do YouTube (campo link).
+// Quem tiver o campo "instagram" no config.js também ganha o botão do Instagram.
 const cartaoMembro = m => {
   const inicial = (m.nome.replace(/[^a-zA-Z0-9]/g, "")[0] || "?").toUpperCase();
   const avatar = m.foto
     ? `<img loading="lazy" src="${m.foto}" alt="Foto de ${m.nome}">`
     : inicial;
-  const link = m.link
-    ? `<a class="lk" href="${m.link}" target="_blank" rel="noopener" aria-label="Perfil de ${m.nome}">${ICONE_LINK}</a>`
-    : `<span class="lk off" role="img" aria-label="Link ainda não informado">${ICONE_LINK}</span>`;
+  const redes = botaoRede(m.link, ICONE_YOUTUBE, "YouTube", m.nome)
+    + ("instagram" in m ? botaoRede(m.instagram, ICONE_INSTAGRAM, "Instagram", m.nome) : "");
   return `
     <div class="cb"><div class="av">${avatar}</div>
     <div class="u">${m.nome}<small>${m.funcao}</small></div>
-    ${link}</div>`;
+    <div class="lks">${redes}</div></div>`;
 };
