@@ -3,7 +3,7 @@
    ========================================================== */
 
 /* ----- Roteamento ----- */
-function rotear() {
+function rotear(manterRolagem) {
   const hash = (location.hash || "#home").slice(1);
   const pagina = PAGINAS[hash] ? hash : "home";
 
@@ -14,15 +14,16 @@ function rotear() {
   $("#nav").classList.remove("open");
   $("#fn").innerHTML = PAGES.map(([id, texto]) => `<a href="#${id}">${texto}</a>`).join("");
 
-  const nomePagina = PAGES.find(p => p[0] === pagina)[1];
+  const nomePagina = (PAGES.find(p => p[0] === pagina) || [0, "Área da equipe"])[1];
   document.title = (pagina === "home" ? "" : nomePagina + " · ") + CONFIG.nome;
 
-  window.scrollTo(0, 0);
+  if (!manterRolagem) window.scrollTo(0, 0);
   if (pagina === "downloads") renderizarLista();
+  if (pagina === "admin") renderAdmin();
 }
 
 $("#fm").innerHTML = marquee("wh", 70);
-addEventListener("hashchange", rotear);
+addEventListener("hashchange", () => rotear());
 rotear();
 
 /* ----- Cliques nos filtros (chips) e nos atalhos da home ----- */

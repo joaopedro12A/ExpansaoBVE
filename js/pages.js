@@ -49,5 +49,9 @@ const PAGINAS = {
       <div class="team">${CONFIG.equipe.map(cartaoMembro).join("")}
       </div>
       <div class="notice"><b>Direitos autorais.</b> Objetos, texturas, trens e demais materiais de terceiros pertencem aos seus autores e são usados com os devidos créditos. Se identificar algum material sem crédito, fale com a equipe para a correção.</div>
-    </div></section>`
+    </div></section>`,
+
+  // Não aparece no menu: acessada pelo link "Área da equipe" no rodapé
+  admin: () => tituloPagina("Área da equipe", "Entre para adicionar e editar downloads.") + `
+    <section class="s"><div class="w" id="adm"></div></section>`
 };
