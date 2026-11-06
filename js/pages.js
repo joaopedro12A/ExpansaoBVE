@@ -6,7 +6,7 @@ const PAGINAS = {
     <section class="hero">${marquee("big", 80)}<div class="w in">
       <div>
         <h1>Rotas e trens para o OpenBVE, prontos para baixar.</h1>
-        <p class="lead">Um lugar só para encontrar rotas, trens e objetos para o simulador, com instruções de instalação passo a passo.</p>
+        <p class="lead">Um lugar só para encontrar rotas e trens para o simulador, com instruções de instalação passo a passo.</p>
         <div class="btns"><a class="btn" href="#downloads">Ver downloads</a><a class="btn o" href="#instalar">Como instalar</a></div>
       </div>
       <img class="lg" src="img/logo.png" alt="Logo EXPANSÃO BVE: dois trens em uma estação">
@@ -19,7 +19,7 @@ const PAGINAS = {
       <div class="cols">
         <a href="#downloads" data-t="Rotas"><h3>Rotas</h3><p>Linhas e trechos para dirigir no OpenBVE, com estações e ambientação.</p></a>
         <a href="#downloads" data-t="Trens"><h3>Trens</h3><p>Composições com interior, sons e identidade visual de cada frota.</p></a>
-        <a href="#downloads" data-t="Objetos"><h3>Objetos e ferramentas</h3><p>Pacotes de objetos e utilitários que as rotas e os trens precisam.</p></a>
+        <a href="#instalar" data-t="Objetos"><h3>Instalação</h3><p>Você pode conferir como instalar o Openbve no seu computador!</p></a>
       </div>
       <div class="cta"><div><h3>Primeira vez no OpenBVE?</h3><p>Veja onde colocar os arquivos e como abrir sua primeira viagem.</p></div><a class="btn" href="#instalar">Ler o guia</a></div>
     </div></section>`,

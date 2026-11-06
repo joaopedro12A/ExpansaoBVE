@@ -3,7 +3,7 @@
    ========================================================== */
 const CONFIG = {
   nome: "EXPANSÃO BVE",
-  tipos: ["Rotas", "Trens", "Objetos", "Ferramentas"],
+  tipos: ["Rotas", "Trens"],
 
   // url vazia = "Em breve". Preencha url (e versão/tamanho) para liberar o download.
   downloads: [
@@ -22,10 +22,11 @@ const CONFIG = {
   // foto: caminho da imagem (vazio mostra a inicial)
   // link: canal ou perfil (vazio deixa o ícone desativado)
   equipe: [
-    { nome: "Nome do membro", funcao: "Coordenação",      foto: "", link: "" },
-    { nome: "Nome do membro", funcao: "Rotas e cenários", foto: "", link: "" },
-    { nome: "Nome do membro", funcao: "Modelagem 3D",     foto: "", link: "" },
-    { nome: "Nome do membro", funcao: "Testes",           foto: "", link: "" }
+    { nome: "Hmmsim Mobilidade", funcao: "",      foto: "./HM.png", link: "https://www.youtube.com/@HmmsimMobilidade" },
+    { nome: "Matheus Pictures", funcao: "",     foto: "./MP.jpg", link: "https://www.youtube.com/@matheuspictures" },
+    { nome: "Nos Trilhos de São Paulo", funcao: "",           foto: "./NSP.jpg", link: "https://www.youtube.com/@NosTrilhosdeS%C3%A3oPaulo" },
+    { nome: "Nicolas Ferreira", funcao: "",           foto: "./NF.jpg", link: "https://www.youtube.com/@nicolasferreira2008" },
+    { nome: "TrenZL", funcao: "", foto: "./TrenZL.jpg", link: "https://www.youtube.com/@TrenZL" },
   ]
 };
 
