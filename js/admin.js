@@ -20,7 +20,8 @@ const adm = {
   carregou: false,
   view: "lista",     // "lista" ou "form"
   editando: null,    // id do download em edição (null = novo)
-  info: ""
+  info: "",
+  imgPendente: null  // imagem escolhida no computador, enviada ao salvar
 };
 
 const CAMPOS = ["nome", "tipo", "versao", "tamanho", "data", "img", "url", "desc"];
@@ -289,9 +290,18 @@ function htmlForm() {
 
         <fieldset class="fs">
           <legend><i>3</i> Imagem e descrição</legend>
-          <label class="fld full"><span class="lb">Imagem</span>
-            <input name="img" placeholder="img/minha-rota.jpg ou https://..." value="${esc(d.img)}">
-            <small class="ht">Envie o arquivo para a pasta <b>img</b> do repositório e use o caminho, ou cole um link https.</small></label>
+          <div class="fld full">
+            <span class="lb">Imagem <em>opcional</em></span>
+            <div class="up" id="up">
+              <div class="up-th"><img id="upimg" src="img/logo.png" alt=""></div>
+              <div class="up-b">
+                <label class="btn o sm up-btn">Escolher imagem do computador<input type="file" id="arq" accept="image/*" hidden></label>
+                <button type="button" class="lnk" data-a="rmimg">Remover imagem</button>
+                <small class="ht" id="uphint">JPG, PNG ou WEBP. Ela é reduzida automaticamente e enviada ao salvar. Você também pode arrastar a imagem para cá.</small>
+              </div>
+            </div>
+            <input name="img" placeholder="ou cole um link: https://... ou img/arquivo.jpg" value="${esc(d.img)}">
+          </div>
           <label class="fld full"><span class="lb">Descrição <em id="cnt">0/1900</em></span>
             <textarea name="desc" maxlength="1900" placeholder="Conte o que é, o que inclui e o que precisa para funcionar.">${esc(d.desc)}</textarea></label>
         </fieldset>
@@ -317,11 +327,67 @@ function atualizarPrevia() {
   const v = {};
   CAMPOS.forEach(c => { v[c] = esc((f.elements[c].value || "").trim()); });
   if (!v.nome) v.nome = "Nome do download";
+  if (adm.imgPendente) v.img = adm.imgPendente.dataUrl;
   alvo.innerHTML = cardDownload(v);
+  const mini = $("#upimg");
+  if (mini) mini.src = adm.imgPendente ? adm.imgPendente.dataUrl : (f.elements.img.value.trim() && enderecoValido(f.elements.img.value.trim()) ? f.elements.img.value.trim() : "img/logo.png");
   const cnt = $("#cnt");
   if (cnt) cnt.textContent = `${f.elements.desc.value.length}/1900`;
 }
 document.addEventListener("input", e => { if (e.target.form && e.target.form.id === "df") atualizarPrevia(); });
+
+/* ----- Imagem enviada do computador ----- */
+const slug = t => String(t || "").normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase()
+  .replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "").slice(0, 40) || "imagem";
+
+// Reduz para no máximo 1280 px de largura e converte para JPEG
+function processarImagem(arquivo) {
+  return new Promise((ok, falha) => {
+    const url = URL.createObjectURL(arquivo);
+    const im = new Image();
+    im.onload = () => {
+      const fator = Math.min(1, 1280 / im.width);
+      const c = document.createElement("canvas");
+      c.width = Math.max(1, Math.round(im.width * fator));
+      c.height = Math.max(1, Math.round(im.height * fator));
+      const x = c.getContext("2d");
+      x.fillStyle = "#fff";
+      x.fillRect(0, 0, c.width, c.height);
+      x.drawImage(im, 0, 0, c.width, c.height);
+      URL.revokeObjectURL(url);
+      const dataUrl = c.toDataURL("image/jpeg", 0.85);
+      ok({ dataUrl, base64: dataUrl.split(",")[1] });
+    };
+    im.onerror = () => { URL.revokeObjectURL(url); falha(new Error("imagem")); };
+    im.src = url;
+  });
+}
+
+async function escolherImagem(arquivo) {
+  if (!arquivo) return;
+  if (!arquivo.type.startsWith("image/")) return mostrarErro("Escolha um arquivo de imagem (JPG, PNG ou WEBP).");
+  if (arquivo.size > 20 * 1024 * 1024) return mostrarErro("A imagem é muito grande (máximo 20 MB).");
+  mostrarErro("");
+  try {
+    adm.imgPendente = await processarImagem(arquivo);
+    const dica = $("#uphint");
+    if (dica) dica.textContent = `Imagem pronta (${Math.round(adm.imgPendente.base64.length * 0.75 / 1024)} KB). Ela será enviada quando você clicar em Salvar.`;
+    atualizarPrevia();
+  } catch (e) { mostrarErro("Não consegui ler essa imagem. Tente outro arquivo."); }
+}
+
+async function enviarImagem(caminho, base64, nome) {
+  const url = `${repoPath}/contents/${caminho.split("/").map(encodeURIComponent).join("/")}`;
+  await gh(url, { method: "PUT", body: JSON.stringify({
+    message: `Adiciona imagem: ${nome}`, content: base64, branch: GH.branch || "main"
+  }) });
+}
+
+document.addEventListener("change", e => { if (e.target.id === "arq") escolherImagem(e.target.files[0]); });
+document.addEventListener("dragover", e => { if (e.target.closest && e.target.closest("#up")) e.preventDefault(); });
+document.addEventListener("drop", e => {
+  if (e.target.closest && e.target.closest("#up")) { e.preventDefault(); escolherImagem(e.dataTransfer.files[0]); }
+});
 
 function renderAdmin() {
   const el = $("#adm");
@@ -380,6 +446,14 @@ document.addEventListener("submit", async e => {
     botao.disabled = true;
     mostrarErro("Salvando…");
     try {
+      if (adm.imgPendente) {
+        mostrarErro("Enviando imagem…");
+        const caminho = `img/uploads/${slug(dados.nome)}-${Date.now().toString(36)}.jpg`;
+        await enviarImagem(caminho, adm.imgPendente.base64, dados.nome);
+        dados.img = caminho;
+        adm.imgPendente = null;
+        mostrarErro("Salvando…");
+      }
       const nova = adm.editando
         ? adm.lista.map(d => d.id === adm.editando ? { ...d, ...dados } : d)
         : [...adm.lista, { id: novoId(), ...dados }];
@@ -401,11 +475,18 @@ document.addEventListener("click", async e => {
 
   if (acao === "sair") sair();
 
-  else if (acao === "novo") { adm.view = "form"; adm.editando = null; adm.info = ""; renderAdmin(); }
+  else if (acao === "rmimg") {
+    adm.imgPendente = null;
+    const f = $("#df"); if (f) { f.elements.img.value = ""; const a = $("#arq"); if (a) a.value = ""; }
+    const dica = $("#uphint"); if (dica) dica.textContent = "Imagem removida.";
+    atualizarPrevia();
+  }
 
-  else if (acao === "editar") { adm.view = "form"; adm.editando = b.dataset.id; adm.info = ""; renderAdmin(); }
+  else if (acao === "novo") { adm.imgPendente = null; adm.view = "form"; adm.editando = null; adm.info = ""; renderAdmin(); }
 
-  else if (acao === "cancelar") { adm.view = "lista"; adm.info = ""; renderAdmin(); }
+  else if (acao === "editar") { adm.imgPendente = null; adm.view = "form"; adm.editando = b.dataset.id; adm.info = ""; renderAdmin(); }
+
+  else if (acao === "cancelar") { adm.imgPendente = null; adm.view = "lista"; adm.info = ""; renderAdmin(); }
 
   else if (acao === "excluir") {
     const d = adm.lista.find(x => x.id === b.dataset.id);
