@@ -1,0 +1,408 @@
+/* ==========================================================
+   Área da equipe: login, lista e formulário de downloads
+   ========================================================== */
+
+.adm-link {
+  margin: 10px 0 0;
+}
+.adm-link a {
+  font-size: 13px;
+  opacity: 0.7;
+}
+.adm-link a:hover {
+  opacity: 1;
+}
+
+/* ----- Campos (usados no login e no formulário) ----- */
+.fld {
+  display: grid;
+  gap: 6px;
+  align-content: start;
+  font: 500 15px Barlow, sans-serif;
+  color: var(--tx);
+  min-width: 0;
+}
+.fld .lb {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  font-weight: 600;
+}
+.fld .lb em {
+  font-style: normal;
+  font-weight: 400;
+  font-size: 13px;
+  color: var(--mu);
+}
+.fld input,
+.fld select,
+.fld textarea {
+  font: 400 16px Barlow, sans-serif;
+  padding: 11px 13px;
+  border: 1.5px solid var(--bd);
+  background: var(--bg);
+  color: var(--tx);
+  width: 100%;
+  border-radius: 0;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+.fld input:focus,
+.fld select:focus,
+.fld textarea:focus {
+  outline: none;
+  border-color: var(--p);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--p) 22%, transparent);
+}
+.fld textarea {
+  min-height: 130px;
+  resize: vertical;
+  line-height: 1.5;
+}
+.fld .ht {
+  color: var(--mu);
+  font-weight: 400;
+  font-size: 13px;
+  line-height: 1.4;
+}
+.fld .ht a,
+.fld .ht b {
+  color: var(--tx);
+}
+.fld .ht a {
+  text-decoration: underline;
+}
+.aerr {
+  margin: 0;
+  font-size: 15px;
+  color: var(--p);
+  min-height: 1em;
+}
+
+/* ----- Login ----- */
+.alogin {
+  display: flex;
+  justify-content: center;
+  padding: 10px 0;
+}
+.af {
+  width: 100%;
+  max-width: 460px;
+  background: var(--bg2);
+  border: 1px solid var(--bd);
+  border-top: 6px solid var(--p);
+  padding: 28px 30px 30px;
+  display: grid;
+  gap: 18px;
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.1);
+}
+.af-top h3 {
+  margin: 0 0 4px;
+  font-size: 32px;
+}
+.af-top p {
+  margin: 0;
+  color: var(--mu);
+}
+.af .ck {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 15px;
+  color: var(--mu);
+}
+.af .ck input {
+  width: 18px;
+  height: 18px;
+  accent-color: var(--p);
+}
+.af .btn {
+  justify-self: start;
+}
+
+/* ----- Barra do usuário e resumo ----- */
+.abar {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  background: var(--hd2);
+  color: #fff;
+  border-top: 6px solid var(--p);
+  padding: 16px 22px;
+}
+.abar .av {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: var(--p);
+  display: grid;
+  place-items: center;
+  font: italic 800 24px "Barlow Condensed", Impact, sans-serif;
+}
+.abar .who {
+  margin-right: auto;
+  display: grid;
+  line-height: 1.25;
+}
+.abar .who small {
+  opacity: 0.65;
+  font-size: 13px;
+}
+.abar .btn.o {
+  background: rgba(255, 255, 255, 0.14);
+}
+
+.astats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  margin: 16px 0 34px;
+}
+.astats div {
+  background: var(--bg2);
+  border: 1px solid var(--bd);
+  padding: 16px 20px;
+  display: grid;
+}
+.astats b {
+  font: italic 800 38px/1 "Barlow Condensed", Impact, sans-serif;
+  color: var(--p);
+}
+.astats span {
+  color: var(--mu);
+  font-size: 14px;
+  margin-top: 4px;
+}
+
+.ahead {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+.ahead h3 {
+  margin: 0;
+  font-size: 32px;
+}
+.abanner {
+  margin: 0 0 16px;
+  padding: 12px 16px;
+  background: var(--bg2);
+  border: 1px solid var(--bd);
+  border-left: 6px solid #2e9e5b;
+  font-size: 15px;
+}
+
+/* ----- Lista de downloads ----- */
+.alist {
+  display: grid;
+  gap: 10px;
+}
+.arow {
+  display: grid;
+  grid-template-columns: 132px 1fr auto auto;
+  gap: 18px;
+  align-items: center;
+  background: var(--bg2);
+  border: 1px solid var(--bd);
+  border-left: 6px solid var(--p);
+  padding: 12px 16px 12px 12px;
+  transition: box-shadow 0.2s;
+}
+.arow:hover {
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+}
+.arow .th {
+  aspect-ratio: 16/9;
+  background: linear-gradient(160deg, #3a3c41, var(--hd2));
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+}
+.arow .th img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+.arow .th .ph {
+  width: 40%;
+  height: auto;
+  opacity: 0.4;
+  object-fit: contain;
+}
+.arow .inf {
+  display: grid;
+  gap: 2px;
+  min-width: 0;
+  justify-items: start;
+}
+.arow .inf b {
+  font-size: 18px;
+  line-height: 1.25;
+}
+.arow .inf small {
+  color: var(--mu);
+  font-size: 14px;
+}
+.arow .acts {
+  display: flex;
+  gap: 6px;
+}
+.avazio {
+  background: var(--bg2);
+  border: 2px dashed var(--bd);
+  padding: 40px 20px;
+  text-align: center;
+  color: var(--mu);
+}
+.avazio b {
+  color: var(--tx);
+  font-size: 18px;
+}
+.avazio p {
+  margin: 6px 0 0;
+}
+
+.btn.sm {
+  padding: 7px 18px;
+  font-size: 15px;
+}
+.btn.del {
+  background: #7a0c11;
+}
+.anote {
+  background: var(--bg2);
+  border: 1px solid var(--bd);
+  border-left: 6px solid var(--p);
+  padding: 18px 22px;
+  max-width: 640px;
+}
+
+/* ----- Formulário ----- */
+.df-head {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  margin-bottom: 22px;
+}
+.df-head h3 {
+  margin: 0;
+  font-size: 36px;
+}
+.voltar {
+  font: 500 15px Barlow, sans-serif;
+  background: var(--bg2);
+  color: var(--tx);
+  border: 1px solid var(--bd);
+  padding: 8px 16px;
+  cursor: pointer;
+}
+.voltar:hover {
+  border-color: var(--p);
+  color: var(--p);
+}
+.df-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 340px;
+  gap: 26px;
+  align-items: start;
+}
+.df-main {
+  display: grid;
+  gap: 18px;
+}
+.fs {
+  margin: 0;
+  min-width: 0;
+  background: var(--bg2);
+  border: 1px solid var(--bd);
+  border-top: 4px solid var(--p);
+  padding: 8px 22px 22px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+.fs legend {
+  float: left;
+  width: 100%;
+  padding: 0;
+  margin: 10px 0 0;
+  grid-column: 1 / -1;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font: italic 800 24px "Barlow Condensed", Impact, sans-serif;
+}
+.fs legend i {
+  width: 28px;
+  height: 28px;
+  display: grid;
+  place-items: center;
+  background: var(--p);
+  color: #fff;
+  font-size: 17px;
+  clip-path: var(--cut);
+}
+.fs legend + * {
+  clear: both;
+}
+.fs .full {
+  grid-column: 1 / -1;
+}
+
+.df-side {
+  position: sticky;
+  top: 86px;
+  display: grid;
+  gap: 14px;
+}
+.pv-t {
+  font: 600 13px Barlow, sans-serif;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--mu);
+}
+.pv .dc {
+  pointer-events: none;
+}
+.df-btns {
+  display: grid;
+  gap: 8px;
+}
+.df-btns .btn {
+  text-align: center;
+}
+
+@media (max-width: 900px) {
+  .df-grid {
+    grid-template-columns: 1fr;
+  }
+  .df-side {
+    position: static;
+  }
+}
+@media (max-width: 680px) {
+  .arow {
+    grid-template-columns: 96px 1fr;
+  }
+  .arow .pill,
+  .arow .acts {
+    grid-column: 1 / -1;
+  }
+  .arow .pill {
+    justify-self: start;
+  }
+  .fs {
+    grid-template-columns: 1fr;
+  }
+  .astats {
+    grid-template-columns: 1fr 1fr 1fr;
+  }
+  .astats b {
+    font-size: 30px;
+  }
+  .ahead {
+    flex-wrap: wrap;
+  }
+}
