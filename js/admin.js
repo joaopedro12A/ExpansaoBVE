@@ -143,10 +143,38 @@ const tokenGuardado = () => {
 
 async function entrar(token, lembrar) {
   adm.token = token;
-  const repo = await gh(repoPath);
-  if (!repo.permissions || !repo.permissions.push) { const e = new Error("sem-permissao"); e.status = 403; throw e; }
+  const alvo = `${GH.dono}/${GH.repo}`;
+
+  // 1) O token é válido?
   let nome = "GitHub";
-  try { nome = (await gh("user")).login || nome; } catch (e) {}
+  try { nome = (await gh("user")).login || nome; }
+  catch (e) {
+    if (e.status === 401) e.detalhe = "O GitHub não aceitou este token (inválido, incompleto ou expirado). Gere um novo e copie com cuidado.";
+    throw e;
+  }
+
+  // 2) O token enxerga o repositório configurado?
+  let repo;
+  try { repo = await gh(repoPath); }
+  catch (e) {
+    if (e.status === 404 || e.status === 403) {
+      let visiveis = [];
+      try { visiveis = (await gh("user/repos?per_page=100&sort=updated")).map(r => r.full_name); } catch (x) {}
+      e.detalhe = `Não encontrei o repositório "${alvo}" com este token (usuário do token: ${nome}). ` +
+        (visiveis.length
+          ? `Repositórios que este token enxerga: ${visiveis.join(", ")}. Se o seu está na lista, corrija "dono" e "repo" em js/github-config.js para o nome exato.`
+          : `Este token não enxerga nenhum repositório. Crie outro marcando "Only select repositories" e escolhendo o repositório do site.`);
+    }
+    throw e;
+  }
+
+  // 3) O token pode gravar?
+  if (!repo.permissions || !repo.permissions.push) {
+    const e = new Error("sem-permissao"); e.status = 403;
+    e.detalhe = `O token enxerga "${alvo}", mas só com leitura. Em Permissions, deixe Contents em "Read and write" (gere um novo token).`;
+    throw e;
+  }
+
   await lerLista();
   adm.usuario = nome;
   adm.view = "lista";
@@ -162,6 +190,7 @@ function sair() {
 
 /* ----- Mensagens de erro em português ----- */
 function msgErro(e) {
+  if (e && e.detalhe) return e.detalhe;
   if (e && e.conflito) return "A lista foi alterada por outra pessoa. Recarregamos a versão mais nova; confira e tente de novo.";
   const s = e && e.status;
   if (s === 401) return "Token inválido ou expirado. Gere um novo no GitHub.";
