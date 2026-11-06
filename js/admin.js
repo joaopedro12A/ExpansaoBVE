@@ -203,56 +203,125 @@ function msgErro(e) {
 const htmlAviso = (titulo, texto) => `<div class="anote"><h3>${titulo}</h3><p>${texto}</p></div>`;
 
 function htmlLogin() {
-  return `<form class="af" id="af">
-    <h3>Entrar</h3>
-    <label>Senha (token de acesso do GitHub)<input type="password" id="at" required autocomplete="off" spellcheck="false"></label>
-    <label class="ck"><input type="checkbox" id="alembrar"> Manter conectado neste computador</label>
-    <p class="aerr" id="aerr" role="alert"></p>
-    <div class="btns"><button class="btn" type="submit">Entrar</button></div>
-  </form>`;
+  return `<div class="alogin">
+    <form class="af" id="af">
+      <div class="af-top"><h3>Entrar</h3><p>Área exclusiva da equipe para gerenciar os downloads.</p></div>
+      <label class="fld"><span class="lb">Senha <em>token de acesso do GitHub</em></span>
+        <input type="password" id="at" required autocomplete="off" spellcheck="false" placeholder="github_pat_...">
+        <small class="ht">Não tem um token? <a href="https://github.com/settings/personal-access-tokens" target="_blank" rel="noopener">Gere aqui</a> (veja o LEIA-ME.md).</small>
+      </label>
+      <label class="ck"><input type="checkbox" id="alembrar"> Manter conectado neste computador</label>
+      <p class="aerr" id="aerr" role="alert"></p>
+      <button class="btn" type="submit">Entrar</button>
+    </form>
+  </div>`;
 }
 
 function htmlLista() {
+  const total = adm.lista.length;
+  const disponiveis = adm.lista.filter(d => d.url).length;
+
   const linhas = adm.lista.map(d => `
-    <div class="arow">
-      <div><b>${esc(d.nome)}</b><small>${esc(d.tipo)}${d.data ? " · " + formatarData(d.data) : ""}${d.versao ? " · v" + esc(d.versao) : ""}</small></div>
+    <article class="arow">
+      <div class="th">${d.img ? `<img src="${esc(d.img)}" alt="" loading="lazy">` : `<img class="ph" src="img/logo.png" alt="">`}</div>
+      <div class="inf">
+        <span class="tag">${esc(d.tipo)}</span>
+        <b>${esc(d.nome)}</b>
+        <small>${[d.data ? formatarData(d.data) : "", d.versao ? "Versão " + esc(d.versao) : "", d.tamanho ? esc(d.tamanho) : ""].filter(Boolean).join(" · ") || "Sem detalhes"}</small>
+      </div>
       <span class="pill ${d.url ? "" : "off"}">${d.url ? "Disponível" : "Em breve"}</span>
       <div class="acts">
         <button class="btn o sm" data-a="editar" data-id="${esc(d.id)}">Editar</button>
         <button class="btn del sm" data-a="excluir" data-id="${esc(d.id)}">Excluir</button>
       </div>
-    </div>`).join("");
+    </article>`).join("");
 
   return `
     <div class="abar">
-      <span class="who">Conectado como <b>${esc(adm.usuario)}</b></span>
-      <button class="btn" data-a="novo">Novo download</button>
-      <button class="btn o" data-a="sair">Sair</button>
+      <div class="av">${esc((adm.usuario || "?")[0].toUpperCase())}</div>
+      <div class="who"><small>Conectado como</small><b>${esc(adm.usuario)}</b></div>
+      <button class="btn o sm" data-a="sair">Sair</button>
     </div>
-    <p class="ainfo" id="ainfo">${esc(adm.info)}</p>
-    <div class="alist">${linhas || `<p class="lead">Nenhum download cadastrado ainda.</p>`}</div>`;
+
+    <div class="astats">
+      <div><b>${total}</b><span>Downloads</span></div>
+      <div><b>${disponiveis}</b><span>Disponíveis</span></div>
+      <div><b>${total - disponiveis}</b><span>Em breve</span></div>
+    </div>
+
+    <div class="ahead">
+      <h3>Seus downloads</h3>
+      <button class="btn" data-a="novo">+ Novo download</button>
+    </div>
+    ${adm.info ? `<p class="abanner" id="ainfo" role="status">${esc(adm.info)}</p>` : ""}
+    <div class="alist">${linhas || `<div class="avazio"><b>Nenhum download cadastrado ainda.</b><p>Clique em "Novo download" para adicionar o primeiro.</p></div>`}</div>`;
 }
 
 function htmlForm() {
   const d = adm.lista.find(x => x.id === adm.editando) || {};
   const opcoesTipo = CONFIG.tipos.map(t => `<option ${d.tipo === t ? "selected" : ""}>${esc(t)}</option>`).join("");
   return `<form class="df" id="df">
-    <h3 class="full">${adm.editando ? "Editar download" : "Novo download"}</h3>
-    <label class="full">Nome<input name="nome" required maxlength="200" value="${esc(d.nome)}"></label>
-    <label>Tipo<select name="tipo">${opcoesTipo}</select></label>
-    <label>Data<input type="date" name="data" value="${esc(d.data)}"></label>
-    <label>Versão<input name="versao" maxlength="30" placeholder="1.0" value="${esc(d.versao)}"></label>
-    <label>Tamanho<input name="tamanho" maxlength="30" placeholder="250 MB" value="${esc(d.tamanho)}"></label>
-    <label class="full">Link do download <small>Deixe vazio para aparecer "Em breve"</small>
-      <input name="url" placeholder="https://..." value="${esc(d.url)}"></label>
-    <label class="full">Imagem <small>Endereço da imagem (https://... ou img/arquivo.jpg)</small>
-      <input name="img" placeholder="img/linha5.jpg" value="${esc(d.img)}"></label>
-    <label class="full">Descrição<textarea name="desc" maxlength="1900">${esc(d.desc)}</textarea></label>
-    <p class="aerr full" id="aerr" role="alert"></p>
-    <div class="btns full"><button class="btn" type="submit" id="asalvar">Salvar</button>
-    <button class="btn o" type="button" data-a="cancelar">Cancelar</button></div>
+    <div class="df-head">
+      <button type="button" class="voltar" data-a="cancelar">← Voltar</button>
+      <h3>${adm.editando ? "Editar download" : "Novo download"}</h3>
+    </div>
+
+    <div class="df-grid">
+      <div class="df-main">
+
+        <fieldset class="fs">
+          <legend><i>1</i> Informações</legend>
+          <label class="fld full"><span class="lb">Nome <em>obrigatório</em></span>
+            <input name="nome" required maxlength="200" placeholder="Ex.: Linha 5-Lilás — Padrão Motiva" value="${esc(d.nome)}"></label>
+          <label class="fld"><span class="lb">Tipo</span><select name="tipo">${opcoesTipo}</select></label>
+          <label class="fld"><span class="lb">Data</span><input type="date" name="data" value="${esc(d.data)}">
+            <small class="ht">Lançamento ou previsão</small></label>
+        </fieldset>
+
+        <fieldset class="fs">
+          <legend><i>2</i> Arquivo</legend>
+          <label class="fld"><span class="lb">Versão</span><input name="versao" maxlength="30" placeholder="1.0" value="${esc(d.versao)}"></label>
+          <label class="fld"><span class="lb">Tamanho</span><input name="tamanho" maxlength="30" placeholder="250 MB" value="${esc(d.tamanho)}"></label>
+          <label class="fld full"><span class="lb">Link do download</span>
+            <input name="url" placeholder="https://..." value="${esc(d.url)}">
+            <small class="ht">Deixe vazio para o botão aparecer como "Em breve".</small></label>
+        </fieldset>
+
+        <fieldset class="fs">
+          <legend><i>3</i> Imagem e descrição</legend>
+          <label class="fld full"><span class="lb">Imagem</span>
+            <input name="img" placeholder="img/minha-rota.jpg ou https://..." value="${esc(d.img)}">
+            <small class="ht">Envie o arquivo para a pasta <b>img</b> do repositório e use o caminho, ou cole um link https.</small></label>
+          <label class="fld full"><span class="lb">Descrição <em id="cnt">0/1900</em></span>
+            <textarea name="desc" maxlength="1900" placeholder="Conte o que é, o que inclui e o que precisa para funcionar.">${esc(d.desc)}</textarea></label>
+        </fieldset>
+      </div>
+
+      <aside class="df-side">
+        <div class="pv-t">Prévia no site</div>
+        <div class="pv" id="pv"></div>
+        <p class="aerr" id="aerr" role="alert"></p>
+        <div class="df-btns">
+          <button class="btn" type="submit" id="asalvar">Salvar download</button>
+          <button class="btn o" type="button" data-a="cancelar">Cancelar</button>
+        </div>
+      </aside>
+    </div>
   </form>`;
 }
+
+// Lê o formulário e mostra, ao lado, como o card vai ficar no site
+function atualizarPrevia() {
+  const f = $("#df"), alvo = $("#pv");
+  if (!f || !alvo) return;
+  const v = {};
+  CAMPOS.forEach(c => { v[c] = esc((f.elements[c].value || "").trim()); });
+  if (!v.nome) v.nome = "Nome do download";
+  alvo.innerHTML = cardDownload(v);
+  const cnt = $("#cnt");
+  if (cnt) cnt.textContent = `${f.elements.desc.value.length}/1900`;
+}
+document.addEventListener("input", e => { if (e.target.form && e.target.form.id === "df") atualizarPrevia(); });
 
 function renderAdmin() {
   const el = $("#adm");
@@ -264,6 +333,7 @@ function renderAdmin() {
     return;
   }
   el.innerHTML = !adm.usuario ? htmlLogin() : adm.view === "form" ? htmlForm() : htmlLista();
+  if (adm.usuario && adm.view === "form") atualizarPrevia();
 }
 
 // Se já havia um token guardado neste navegador, entra sozinho
