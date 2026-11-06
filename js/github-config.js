@@ -6,8 +6,8 @@
    (o site continua funcionando normalmente).
    ========================================================== */
 window.GH_CONFIG = {
-  dono: "",
-  repo: "",
-  branch: "main",            // ramo que o site publica (main ou master)
-  arquivo: "downloads.json"  // arquivo com a lista de downloads
+  dono: "seuusuario",
+  repo: "expansao-bve",
+  branch: "main",
+  arquivo: "downloads.json"
 };
