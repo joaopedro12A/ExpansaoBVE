@@ -6,7 +6,7 @@
    (o site continua funcionando normalmente).
    ========================================================== */
 window.GH_CONFIG = {
-  dono: "seuusuario",
+  dono: "Jota",
   repo: "expansao-bve",
   branch: "main",
   arquivo: "downloads.json"
