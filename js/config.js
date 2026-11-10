@@ -30,7 +30,7 @@ const CONFIG = {
     { nome: "Bus & Rail Brasil", funcao: "",      foto: "./BUS.jpg", link: "https://www.youtube.com/@bus..e..railbrasil/videos" },
     { nome: "ZEZINMODS3D Z3D", funcao: "",      foto: "./Z3D.jpg", link: "https://www.youtube.com/@JB_Antigo-frases%E3%83%84/featured" },
     { nome: "Mr.Paraty", funcao: "",      foto: "./MR.jpg", link: "https://www.youtube.com/@Mr.viacaoparaty" },
-    { nome: "Hmmsim Mobilidade", funcao: "",      foto: "./HM.png", link: "https://www.youtube.com/@HmmsimMobilidade" },
+    { nome: "Rail Mobilidade", funcao: "",      foto: "./HM.png", link: "https://www.youtube.com/@HmmsimMobilidade" },
   ]
 };
 
